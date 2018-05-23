@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     handleSelect(key){
-      this.$router.push(key);
+      this.$router.push({"name":key});
     }
   }
 }

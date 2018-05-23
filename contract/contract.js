@@ -5,13 +5,13 @@ var Story = function(text) {
         var obj = JSON.parse(text);
         this.title = obj.title; 
         this.founder = obj.founder;
-        this.createtime = obj.createTime;
+        this.createtime = obj.createtime;
         this.passageSize = obj.passageSize;
 		this.description = obj.description;
     } else {
         this.title = "";
         this.founder = "";
-        this.createtime =  new Date().toLocaleString();
+        this.createtime = 0;
         this.passageSize = 0;
 		this.description = "";
     }
@@ -30,7 +30,7 @@ var Passage = function(text) {
     } else {
         this.content = "";
         this.auther = "";
-        this.createtime = new Date().toLocaleString();
+        this.createtime = 0;
     }
 };
 
@@ -102,12 +102,13 @@ StoryChainConstract.prototype = {
         title= this._validateTitle(title);
 		description = this._validateDescription(description);
 		if (this.storyMap.get(title)) {
-            throw new Error("Story has already existed");
+            //throw new Error("Story has already existed");
+			return 0;
         }
 		var story = new Story();
         story.title = title;
         story.founder = Blockchain.transaction.from;
-        story.createtime = new Date().toLocaleString();
+        story.createtime = new Date().getTime();
         story.passageSize = 0;
 		story.description = description;
         this.storyMap.put(title, story);
@@ -160,7 +161,7 @@ StoryChainConstract.prototype = {
         var passage = new Passage();
         passage.content = content;
         passage.auther = Blockchain.transaction.from;
-        passage.createtime = new Date().toLocaleString();
+        passage.createtime = new Date().getTime();
         this.passageMap.set(id, passage);
         var collection = this.passageIdCollectionMap.get(title);
         collection.IdList[story.passageSize] = id;
@@ -218,7 +219,7 @@ StoryChainConstract.prototype = {
         if (content === "") {
             throw new Error("Passage content is blank");
         }
-        if (content.length > 1024) {
+        if (content.length > 2048) {
             throw new Error("Passage content is too long");
         }
         if (content.length < 32) {
@@ -241,7 +242,7 @@ StoryChainConstract.prototype = {
             throw new Error("Story description is too short");
         }
 		return description;
-	}
+	},
 	_validatePageSize(pageSize) {
 		if (pageSize == undefined || pageSize == null || pageSize == "" || pageSize <= 0) {
 			throw new Error("Args is unvalidated");

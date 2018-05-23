@@ -82,7 +82,7 @@ export default {
       var callCreateStory = "createStory";
       var callCreateStoryArgs = "[\"" + title + "\",\"" + description + "\"]";
       var serialNumber = nebPay.call(dappAddress,"0",callCreateStory,callCreateStoryArgs, {
-        callback: NebPay.config.testnetUrl, //在测试网查询
+        callback: payCallbackUrl, 
         listener: function(resp) {
           //console.log(resp);
           intervalQuery = setInterval(function() {
@@ -92,29 +92,29 @@ export default {
       });
 
       function queryResultInfo() {
-        nebPay.queryPayInfo(serialNumber).then(function(resp) {
+        nebPay.queryPayInfo(serialNumber, {callback: payCallbackUrl}).then(function(resp) {
           var respObject = JSON.parse(resp)
           //console.log(respObject);
           //code==0交易发送成功, status==1交易已被打包上链
-          if(respObject.code === 0 && respObject.data.status === 1){ 	
-        		clearInterval(intervalQuery);
-            if ("Story has already existed" === resp.result) {
-              self.$alert('故事"' + title + '"已经存在了，你可以搜索并参与该故事的后续创作哦', '温馨提示', {
+          if(respObject.code === 0 && respObject.data.status === 1) { 	
+        	clearInterval(intervalQuery);
+			var storyNum = parseInt(resp.result);
+            if (0 === storyNum) {
+                self.$alert('故事"' + title + '"已经存在了，你可以搜索并参与该故事的后续创作哦', '温馨提示', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                      self.view();
+                    }
+                });
+        	} else {
+                self.$alert('你已经成功创建了故事"' + title + '"', '温馨提示', {
                 confirmButtonText: '确定',
                 callback: action => {
                   self.view();
                 }
               });
-        		} else {
-        			var storyNum = parseInt(resp.result);
-              self.$alert('你已经成功创建了第' + storyNum + '个故事', '温馨提示', {
-                confirmButtonText: '确定',
-                callback: action => {
-                  self.view();
-                }
-              });
-        		}		
-        	}
+        	}		
+          }
         }).catch(function (err) {
            console.log("error:" + err.message)
         })

@@ -82,37 +82,31 @@ export default {
       var callAppendPassage = "appendPassage";
   	  var callAppendPassageArgs = "[\"" + this.title + "\",\"" + content + "\"]";
   	  var serialNumber = nebPay.call(dappAddress,"0",callAppendPassage,callAppendPassageArgs, {
-        callback: NebPay.config.testnetUrl, //在测试网查询
-    		listener: function(resp) {
-    			//console.log(resp);
-          intervalQuery = setInterval(function() {
-            queryResultInfo();
-          }, 10000);
-    		}
+        callback: payCallbackUrl, 
+		listener: function(resp) {
+    		//console.log(resp);
+			intervalQuery = setInterval(function() {
+				queryResultInfo();
+			}, 10000);
+    	}
   	  });
 
       function queryResultInfo() {
-        nebPay.queryPayInfo(serialNumber).then(function (resp) {
-          var respObject = JSON.parse(resp)
-          //console.log(respObject);
-          //code==0交易发送成功, status==1交易已被打包上链
-          if(respObject.code === 0 && respObject.data.status === 1){  
-  				  clearInterval(intervalQuery);
-  				  if ("Error: Story has already existed" === resp.result) {
-    					//TODO 跳转到创建故事页面
-    					return;
-  				  } else {
-    					//跳转到内容列表页的最后一页
-              self.$alert('故事内容添加成功', '温馨提示', {
+        nebPay.queryPayInfo(serialNumber, {callback: payCallbackUrl}).then(function (resp) {
+			var respObject = JSON.parse(resp)
+			//console.log(respObject);
+			//code==0交易发送成功, status==1交易已被打包上链
+			if(respObject.code === 0 && respObject.data.status === 1){  
+  				clearInterval(intervalQuery);
+				self.$alert('故事内容添加成功', '温馨提示', {
                 confirmButtonText: '确定',
                 callback: action => {
                   self.view();
                 }
               });
-  				  }
           }
         }).catch(function (err) {
-          //console.log("error:" + err.message)
+          console.log("error:" + err.message)
         })
       }
     },
