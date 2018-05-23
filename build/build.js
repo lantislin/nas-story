@@ -1,6 +1,5 @@
 require('./check-versions')()
 
-process.env.PUBLISH_ENV = process.argv.splice(2)[1]
 process.env.NODE_ENV = 'production'
 
 var ora = require('ora')

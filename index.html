@@ -15,17 +15,17 @@
     <script src="./static/js/nebPay.js"></script>
     <script src="./static/js/nebulas.js"></script>
     <script type="text/javascript">
+      var NODE_ENV = '<%= htmlWebpackPlugin.options.NODE_ENV %>';
       var dappAddress = "n1tdh6oSUZa7mXQ2TeyjBZxZQFfBagHhJP5";
       var NebPay = require("nebpay");
       var nebPay = new NebPay();
-	  var payCallbackUrl = NebPay.config.mainnetUrl;
-	  //var payCallbackUrl = NebPay.config.testnetUrl;
+      var payCallbackUrl = NODE_ENV = 'production' ? NebPay.config.mainnetUrl : NebPay.config.testnetUrl;
       var nebulas = require("nebulas");
       var Account = nebulas.Account;
       var neb = new nebulas.Neb();
-	  neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"));
-	  //neb.setRequest(new nebulas.HttpRequest("https://testnet.nebulas.io"));
       var from = Account.NewAccount().getAddressString();
+      var httpRequestUrl = NODE_ENV = 'production' ? 'https://mainnet.nebulas.io' : 'https://testnet.nebulas.io';
+      neb.setRequest(new nebulas.HttpRequest(httpRequestUrl));
     </script>
     <!-- built files will be auto injected -->
   </body>

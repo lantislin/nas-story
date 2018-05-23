@@ -52,7 +52,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: config.build.index,
       template: 'index.html',
-      cdnDomain: process.env.PUBLISH_ENV === 'prod' ? 'dataserver.cn' : 'iotdataserver.net', //cdn domain prefix
+      NODE_ENV: process.env.NODE_ENV,
       inject: true,
       minify: {
         removeComments: true,

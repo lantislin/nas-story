@@ -28,7 +28,7 @@ module.exports = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      cdnDomain: 'iotdataserver.net', //cdn domain prefix
+      NODE_ENV: process.env.NODE_ENV,
       inject: true
     }),
     new FriendlyErrorsPlugin()
