@@ -8,7 +8,7 @@
           <span class="split" v-if="index < menuList.length - 1">|</span>
         </a>
       </div>
-      <p class="copyright">Copyright © 2017-2018 xxx.xxx</p>
+      <p class="copyright">Copyright © 2017-2018 一起讲故事</p>
   	</div>
   </div>
 </template>
