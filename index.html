@@ -19,12 +19,12 @@
       var dappAddress = "n1tdh6oSUZa7mXQ2TeyjBZxZQFfBagHhJP5";
       var NebPay = require("nebpay");
       var nebPay = new NebPay();
-      var payCallbackUrl = NODE_ENV = 'production' ? NebPay.config.mainnetUrl : NebPay.config.testnetUrl;
+      var payCallbackUrl = NODE_ENV === 'production' ? NebPay.config.mainnetUrl : NebPay.config.testnetUrl;
       var nebulas = require("nebulas");
       var Account = nebulas.Account;
       var neb = new nebulas.Neb();
       var from = Account.NewAccount().getAddressString();
-      var httpRequestUrl = NODE_ENV = 'production' ? 'https://mainnet.nebulas.io' : 'https://testnet.nebulas.io';
+      var httpRequestUrl = NODE_ENV === 'production' ? 'https://mainnet.nebulas.io' : 'https://testnet.nebulas.io';
       neb.setRequest(new nebulas.HttpRequest(httpRequestUrl));
     </script>
     <!-- built files will be auto injected -->
