@@ -61,8 +61,15 @@ captures/
 
 #nodejs
 node_modules/
-.DS_Store
+*.DS_Store
 
 #svn
 .svn/
 *.svn
+
+doc/
+
+dist/
+
+account/
+
